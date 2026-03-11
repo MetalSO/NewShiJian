@@ -1,0 +1,141 @@
+.main-layout {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  margin-right: 48px;
+  flex-shrink: 0;
+}
+
+.logo a {
+  text-decoration: none;
+}
+
+.logo h1 {
+  color: #fff;
+  font-size: 22px;
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  font-family: "SimSun", "宋体", serif;
+}
+
+html[data-theme="light"] .logo h1 {
+  color: var(--primary-color);
+}
+
+.nav-menu {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  max-width: 400px;
+}
+
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.welcome-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+}
+
+html[data-theme="light"] .welcome-text {
+  color: var(--text-primary);
+}
+
+.user-avatar {
+  cursor: pointer;
+  background-color: var(--primary-color);
+}
+
+.content {
+  padding: 24px 48px;
+  background: #f0f2f5;
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  padding: 32px 48px;
+  border-radius: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+.footer {
+  text-align: center;
+  background: #f0f2f5;
+  color: rgba(0, 0, 0, 0.45);
+  padding: 24px 48px;
+  font-family: "SimSun", "宋体", serif;
+}
+
+@media (max-width: 1200px) {
+  .header {
+    padding: 0 32px;
+  }
+  
+  .content {
+    padding: 24px 32px;
+  }
+  
+  .content-wrapper {
+    padding: 24px 32px;
+  }
+  
+  .footer {
+    padding: 24px 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+  
+  .logo {
+    margin-right: 16px;
+  }
+  
+  .logo h1 {
+    font-size: 16px;
+  }
+  
+  .content {
+    padding: 16px;
+  }
+  
+  .content-wrapper {
+    padding: 16px;
+  }
+  
+  .footer {
+    padding: 16px;
+  }
+  
+  .welcome-text {
+    display: none;
+  }
+}

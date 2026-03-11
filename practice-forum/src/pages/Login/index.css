@@ -1,0 +1,68 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 24px !important;
+  color: var(--primary-color);
+  font-family: "SimSun", "宋体", serif;
+}
+
+.oauth-tab {
+  padding: 16px 0;
+}
+
+.oauth-description {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.oauth-button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border: none;
+  height: 48px;
+  font-size: 16px;
+}
+
+.oauth-button:hover {
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-color) 100%);
+}
+
+.oauth-steps {
+  margin-top: 32px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.oauth-steps ol {
+  margin: 12px 0 0 20px;
+  padding: 0;
+}
+
+.oauth-steps li {
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.oauth-info {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.oauth-info .ant-typography {
+  font-size: 12px;
+}

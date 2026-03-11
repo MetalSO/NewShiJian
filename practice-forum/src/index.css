@@ -1,0 +1,586 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  background-color: #f0f2f5;
+  color: rgba(0, 0, 0, 0.85);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+:root,
+html[data-theme="light"] {
+  --bg-primary: #f0f2f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #fafafa;
+  --bg-elevated: #f5f5f5;
+  --text-primary: rgba(0, 0, 0, 0.85);
+  --text-secondary: rgba(0, 0, 0, 0.45);
+  --text-tertiary: rgba(0, 0, 0, 0.25);
+  --border-color: #f0f0f0;
+  --card-bg: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-color-hover: rgba(0, 0, 0, 0.15);
+  /* --primary-color and --primary-hover are set dynamically by ThemeContext */
+}
+
+html[data-theme="dark"] {
+  --bg-primary: #141414;
+  --bg-secondary: #1f1f1f;
+  --bg-tertiary: #2a2a2a;
+  --bg-elevated: #323232;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-tertiary: rgba(255, 255, 255, 0.45);
+  --border-color: #303030;
+  --card-bg: #1f1f1f;
+  --shadow-color: rgba(0, 0, 0, 0.45);
+  --shadow-color-hover: rgba(0, 0, 0, 0.65);
+  --shadow-elevated: rgba(0, 0, 0, 0.6);
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] span:not(.anticon) {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] div:not(.anticon):not(.ant-btn):not(.ant-card):not(.ant-modal):not(.ant-dropdown):not(.ant-select-dropdown):not(.ant-message-notice-content):not(.ant-alert):not(.ant-empty):not(.ant-spin):not(.ant-tabs-nav):not(.ant-tabs-nav-list):not(.ant-tabs-tab):not(.ant-tabs-tab-btn):not(.ant-tabs-ink-bar):not(.ant-descriptions):not(.ant-list):not(.ant-list-item):not(.ant-layout):not(.ant-layout-content):not(.ant-layout-header):not(.ant-layout-footer):not(.ant-menu):not(.ant-menu-item):not(.ant-menu-item-group):not(.ant-form-item-label):not(.ant-input):not(.ant-input-affix-wrapper):not(.ant-select-selector):not(.ant-checkbox):not(.ant-switch):not(.ant-radio):not(.ant-tag):not(.ant-avatar):not(.ant-badge):not(.ant-divider):not(.ant-tabs-nav-operations):not(.ant-tabs-nav-add) {
+  background-color: transparent !important;
+}
+
+.content-wrapper,
+.ant-layout-content {
+  background-color: var(--bg-primary) !important;
+  min-height: calc(100vh - 64px);
+}
+
+html[data-theme="dark"] .content-wrapper,
+html[data-theme="dark"] .ant-layout-content {
+  background-color: var(--bg-primary) !important;
+}
+
+html[data-theme="dark"] .ant-layout {
+  background: var(--bg-primary) !important;
+}
+
+html[data-theme="dark"] .ant-layout-content {
+  background: var(--bg-primary) !important;
+}
+
+html[data-theme="dark"] .ant-card {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-card-head {
+  background: var(--bg-tertiary) !important;
+  border-bottom-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-card-head-title {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-card-body {
+  background: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-menu {
+  background: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-menu-item {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-menu-item:hover {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-typography {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-typography.ant-typography-secondary {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .ant-form-item-label > label {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .ant-form-item-required::before {
+  color: #ff4d4f !important;
+}
+
+html[data-theme="dark"] .ant-checkbox-wrapper {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .ant-checkbox {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-checkbox-input {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-checkbox-checked .ant-checkbox-input {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-checkbox-indeterminate .ant-checkbox-inner {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-switch {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-switch-checked {
+  background: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-switch-inner {
+  background: var(--bg-primary) !important;
+}
+
+html[data-theme="dark"] .ant-radio-wrapper {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .ant-radio {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-radio-input {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-radio-checked .ant-radio-input {
+  border-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-radio-checked .ant-radio-inner {
+  border-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-radio-inner::after {
+  background-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-input,
+html[data-theme="dark"] .ant-input-affix-wrapper,
+html[data-theme="dark"] .ant-select-selector {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-input::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+html[data-theme="dark"] .ant-btn-default {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .ant-btn-default:hover {
+  background: var(--bg-elevated);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+html[data-theme="dark"] .ant-btn-primary {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-btn-primary:hover {
+  background: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+html[data-theme="dark"] .ant-select-dropdown {
+  background: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] .ant-select-item {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-select-item-option-active,
+html[data-theme="dark"] .ant-select-item-option-selected {
+  background: var(--bg-tertiary) !important;
+}
+
+html[data-theme="dark"] .ant-tag:not(.ant-tag-has-color) {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-empty-description {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .ant-spin-text {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-modal-content {
+  background: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] .ant-modal-header {
+  background: var(--bg-secondary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-modal-title {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-modal-body {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-modal-footer {
+  border-top-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-message-notice-content {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-tabs-tab {
+  background: transparent !important;
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .ant-tabs-tab:hover {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .ant-tabs-ink-bar {
+  background: var(--primary-color) !important;
+}
+
+html[data-theme="dark"] .ant-tabs-nav::before {
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-list {
+  background: transparent !important;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .ant-list-item {
+  background: transparent !important;
+  color: var(--text-primary);
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-descriptions {
+  background: transparent !important;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .ant-descriptions-item-label {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-secondary);
+}
+
+html[data-theme="dark"] .ant-descriptions-item-content {
+  background: transparent !important;
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .ant-alert {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .ant-alert-message {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-alert-description {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .ant-avatar {
+  background: var(--bg-tertiary) !important;
+}
+
+html[data-theme="dark"] .ant-badge-status-text {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .ant-divider {
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .ant-divider-horizontal.ant-divider-with-text::before,
+html[data-theme="dark"] .ant-divider-horizontal.ant-divider-with-text::after {
+  border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .ant-layout-header {
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+html[data-theme="dark"] .ant-layout-footer {
+  background: var(--bg-primary) !important;
+  color: var(--text-secondary) !important;
+}
+
+.home-page,
+.post-detail-page,
+.create-post-page,
+.profile-page,
+.settings-page,
+.login-page {
+  background-color: var(--bg-primary) !important;
+  min-height: calc(100vh - 64px);
+  padding: 24px;
+}
+
+html[data-theme="dark"] .post-title,
+html[data-theme="dark"] .page-title,
+html[data-theme="dark"] .post-title-main {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .post-meta,
+html[data-theme="dark"] .author-details,
+html[data-theme="dark"] .author-name,
+html[data-theme="dark"] .post-time,
+html[data-theme="dark"] .post-updated {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+}
+
+.markdown-content {
+  line-height: 1.8;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+  background: transparent !important;
+}
+
+.markdown-content h1 { font-size: 2em; }
+.markdown-content h2 { font-size: 1.5em; }
+.markdown-content h3 { font-size: 1.25em; }
+.markdown-content h4 { font-size: 1.125em; }
+
+.markdown-content p {
+  margin-bottom: 1em;
+  color: var(--text-primary);
+  background: transparent !important;
+}
+
+.markdown-content code {
+  background: var(--bg-tertiary) !important;
+  color: #ff79c6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background: var(--bg-tertiary) !important;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.markdown-content pre code {
+  background: transparent !important;
+  padding: 0;
+  color: #50fa7b;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 16px;
+  margin: 1em 0;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary) !important;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 24px;
+  margin: 1em 0;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5em;
+  color: var(--text-primary);
+  background: transparent !important;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  text-align: left;
+  background: transparent !important;
+}
+
+.markdown-content th {
+  background: var(--bg-tertiary) !important;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markdown-content td {
+  color: var(--text-primary);
+}
+
+.markdown-content img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.markdown-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2em 0;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+html[data-theme="dark"] .setting-info {
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .setting-info strong {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .help-text,
+html[data-theme="dark"] .form-help {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+}
+
+html[data-theme="dark"] .preview-label {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .post-preview {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .ant-menu-item-selected {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+html[data-theme="dark"] .ant-menu-item-selected::after {
+  border-color: var(--primary-color) !important;
+}

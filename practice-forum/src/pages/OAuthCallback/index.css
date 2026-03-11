@@ -1,0 +1,14 @@
+.oauth-callback-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.oauth-callback-page .ant-result {
+  background: #fff;
+  padding: 48px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
