@@ -77,17 +77,32 @@ app.all('/api/caf/*', async (req, res) => {
     }
 
     const response = await fetch(url, fetchOptions);
-    
-    let data;
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      data = await response.text();
+
+    // Some CAF endpoints may return empty response bodies (e.g. 204).
+    // Parse safely by reading raw text first, then JSON when appropriate.
+    const contentType = response.headers.get('content-type') || '';
+    const raw = await response.text();
+    const isJson = contentType.includes('application/json');
+
+    let data: any = null;
+    if (raw.length > 0) {
+      if (isJson) {
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          data = { message: raw };
+        }
+      } else {
+        data = raw;
+      }
     }
-    
+
     console.log(`[CAF Proxy] Response:`, data);
-    res.status(response.status).json(data);
+    if (isJson) {
+      res.status(response.status).json(data ?? {});
+    } else {
+      res.status(response.status).send(data ?? '');
+    }
   } catch (error: any) {
     console.error('[CAF Proxy] Error:', error.message);
     res.status(500).json({ error: error.message || '代理请求失败' });

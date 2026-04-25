@@ -43,7 +43,15 @@ const Login: React.FC = () => {
         body: JSON.stringify(values),
       });
 
-      const data = await response.json();
+      const raw = await response.text();
+      let data: any = {};
+      if (raw) {
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          data = { message: raw };
+        }
+      }
 
       if (!response.ok) {
         throw new Error(data.message || '注册失败');
