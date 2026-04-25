@@ -92,11 +92,16 @@ export const ReadingPreferencesProvider: React.FC<{ children: ReactNode }> = ({ 
     setPreferences(prev => ({ ...prev, maxWidth: enabled }));
   };
 
-  const applyStyles = useMemo((): React.CSSProperties => ({
-    fontFamily: fontFamilyMap[preferences.fontFamily],
-    fontSize: `${fontSizeMap[preferences.fontSize]}px`,
-    lineHeight: lineHeightMap[preferences.lineHeight],
-  }), [preferences]);
+  const appliedStyles = useMemo(
+    (): React.CSSProperties => ({
+      fontFamily: fontFamilyMap[preferences.fontFamily],
+      fontSize: `${fontSizeMap[preferences.fontSize]}px`,
+      lineHeight: lineHeightMap[preferences.lineHeight],
+    }),
+    [preferences],
+  );
+
+  const applyStyles = (): React.CSSProperties => appliedStyles;
 
   return (
     <ReadingPreferencesContext.Provider value={{

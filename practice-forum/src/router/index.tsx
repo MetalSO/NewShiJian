@@ -27,6 +27,10 @@ const router = createBrowserRouter([
     element: <MainLayout><CreatePost /></MainLayout>,
   },
   {
+    path: '/edit/:id',
+    element: <MainLayout><CreatePost /></MainLayout>,
+  },
+  {
     path: '/post/:id',
     element: <MainLayout><PostDetail /></MainLayout>,
   },
@@ -49,3 +53,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+

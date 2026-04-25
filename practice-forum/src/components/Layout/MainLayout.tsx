@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Button, Avatar, Dropdown, Space, Badge } from 'antd';
+﻿import React, { useState, useEffect } from 'react';
+import { Layout, Menu, Button, Avatar, Dropdown, Space, Badge, Input } from 'antd';
 import { UserOutlined, HomeOutlined, PlusOutlined, LogoutOutlined, SettingOutlined, MessageOutlined } from '@ant-design/icons';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -8,6 +8,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import './MainLayout.css';
 
 const { Header, Content, Footer } = Layout;
+const { Search } = Input;
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [unreadCount, setUnreadCount] = useState(0);
+  const searchKeyword = new URLSearchParams(location.search).get('q') || '';
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
@@ -27,7 +29,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     }
 
     let mounted = true;
-    let intervalId: ReturnType<typeof setInterval>;
+    const intervalId = setInterval(() => {
+      void fetchUnreadCount();
+    }, 30000);
 
     const fetchUnreadCount = async () => {
       try {
@@ -40,23 +44,26 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       }
     };
 
-    // 立即获取一次
-    fetchUnreadCount();
-    
-    // 每30秒轮询一次
-    intervalId = setInterval(fetchUnreadCount, 30000);
+    void fetchUnreadCount();
 
     return () => {
       mounted = false;
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      clearInterval(intervalId);
     };
   }, [isAuthenticated, user]);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleSearch = (value: string) => {
+    const keyword = value.trim();
+    if (keyword) {
+      navigate(`/?q=${encodeURIComponent(keyword)}`);
+      return;
+    }
+    navigate('/');
   };
 
   const userMenuItems = [
@@ -100,16 +107,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       icon: <PlusOutlined />,
       label: <Link to="/create">发布帖子</Link>,
     },
-    {
-      key: '/profile',
-      icon: <UserOutlined />,
-      label: <Link to="/profile">个人中心</Link>,
-    },
-    {
-      key: '/settings',
-      icon: <SettingOutlined />,
-      label: <Link to="/settings">设置</Link>,
-    },
   ];
 
   return (
@@ -123,10 +120,21 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <Menu
           theme={resolvedMode === 'dark' ? 'dark' : 'light'}
           mode="horizontal"
+          disabledOverflow
           selectedKeys={[location.pathname]}
           items={menuItems}
           className="nav-menu"
         />
+        <div className="header-search">
+          <Search
+            placeholder="搜索文章标题、摘要或正文"
+            allowClear
+            enterButton="搜索"
+            key={location.search}
+            defaultValue={searchKeyword}
+            onSearch={handleSearch}
+          />
+        </div>
         <div className="header-right">
           {isAuthenticated ? (
             <Space>

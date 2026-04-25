@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, message, Tabs } from 'antd';
 import { UserOutlined, LockOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { loginWithOAuth } from '../../services/api';
+import { CAF_BASE_URL, loginWithOAuth } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import './index.css';
 

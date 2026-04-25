@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import { Card, Button, Empty, Spin, Typography, Tag, Select, Avatar } from 'antd';
 import { PlusOutlined, ClockCircleOutlined, FireOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import type { Post } from '../../types';
@@ -15,25 +15,29 @@ const Home: React.FC = () => {
   const [sortBy, setSortBy] = useState<'time' | 'popularity'>('time');
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated } = useAuth();
 
+  const keyword = useMemo(() => {
+    return new URLSearchParams(location.search).get('q')?.trim() || '';
+  }, [location.search]);
+
   useEffect(() => {
-    fetchPosts(sortBy);
+    void fetchPosts(sortBy);
   }, [sortBy]);
 
   const fetchPosts = async (sortOption: 'time' | 'popularity' = 'time') => {
     try {
       setLoading(true);
       const data = await getPosts();
-      
-      // 根据排序选项对帖子进行排序
+
       const sortedData = [...data];
       if (sortOption === 'time') {
         sortedData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       } else if (sortOption === 'popularity') {
         sortedData.sort((a, b) => (b.likes || 0) - (a.likes || 0));
       }
-      
+
       setPosts(sortedData);
     } catch (error) {
       console.error('获取帖子失败:', error);
@@ -47,11 +51,10 @@ const Home: React.FC = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
       const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-      
-      // 如果滚动到底部附近（距离底部100px内）且没有正在加载
+
       if (scrollTop + clientHeight >= scrollHeight - 100 && !isFetchingMore && !loading) {
         setIsFetchingMore(true);
-        fetchPosts(sortBy).finally(() => setIsFetchingMore(false));
+        void fetchPosts(sortBy).finally(() => setIsFetchingMore(false));
       }
     };
 
@@ -79,6 +82,20 @@ const Home: React.FC = () => {
       minute: '2-digit',
     });
   };
+
+  const filteredPosts = useMemo(() => {
+    if (!keyword) {
+      return posts;
+    }
+
+    const normalizedKeyword = keyword.toLowerCase();
+    return posts.filter((post) => {
+      const title = post.title?.toLowerCase() || '';
+      const summary = post.summary?.toLowerCase() || '';
+      const content = post.content?.toLowerCase() || '';
+      return title.includes(normalizedKeyword) || summary.includes(normalizedKeyword) || content.includes(normalizedKeyword);
+    });
+  }, [keyword, posts]);
 
   return (
     <div className="home-page">
@@ -109,18 +126,18 @@ const Home: React.FC = () => {
         <div className="loading-container">
           <Spin size="large" />
         </div>
-      ) : posts.length === 0 ? (
+      ) : filteredPosts.length === 0 ? (
         <Card className="empty-card">
-          <Empty description="暂无帖子，快来发布第一个吧！" />
+          <Empty description={keyword ? `未找到与“${keyword}”相关的文章` : '暂无帖子，快来发布第一个吧！'} />
         </Card>
       ) : (
         <div>
           <div className="posts-grid">
-            {posts.map((post) => {
+            {filteredPosts.map((post) => {
               const imageUrl = post.cover_image || extractFirstImageUrl(post.content);
               const avatarUrl = getAvatarUrl(post.author_username, post.author_avatar);
-              const previewText = post.content.replace(/!\[.*?\]\(.*?\)/g, '').trim().slice(0, 200);
-              
+              const summaryText = (post.summary || '').trim();
+
               return (
                 <Card
                   key={post.id}
@@ -139,9 +156,7 @@ const Home: React.FC = () => {
                     <Title level={4} className="post-title-modern">
                       {post.title}
                     </Title>
-                    <Text className="post-preview-modern">
-                      {previewText}
-                    </Text>
+                    {summaryText && <Text className="post-preview-modern">{summaryText}</Text>}
                     <div className="post-footer">
                       <div className="author-info">
                         <Avatar src={avatarUrl} alt={post.author_username} className="author-avatar" size="small" />
@@ -151,9 +166,7 @@ const Home: React.FC = () => {
                         <Tag icon={<ClockCircleOutlined />} color="default">
                           {formatDate(post.created_at)}
                         </Tag>
-                        {post.likes !== undefined && (
-                          <Tag color="red">{post.likes} 赞</Tag>
-                        )}
+                        {post.likes !== undefined && <Tag color="red">{post.likes} 赞</Tag>}
                       </div>
                     </div>
                   </div>

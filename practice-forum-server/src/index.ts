@@ -1,10 +1,12 @@
+require('dotenv').config();
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
+import path from 'path';
 import 'dotenv/config';
 import { WebSocketServer, WebSocket } from 'ws';
 import { initDatabase } from './db';
-import { postsRouter, settingsRouter, commentsRouter, reportsRouter, messagesRouter } from './routes';
+import { postsRouter, uploadsRouter, settingsRouter, commentsRouter, reportsRouter, messagesRouter } from './routes';
 
 // WebSocket客户端映射
 const clients = new Map<string, WebSocket>();
@@ -36,12 +38,14 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 app.use('/api/posts', postsRouter);
+app.use('/api/uploads', uploadsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/comments', commentsRouter);
 app.use('/api/reports', reportsRouter);

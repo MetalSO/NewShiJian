@@ -285,10 +285,11 @@ export const getPost = async (id: string): Promise<Post | null> => {
   }
 };
 
-export const createPost = async (title: string, content: string, author: User, cover_image?: string): Promise<Post> => {
+export const createPost = async (title: string, summary: string, content: string, author: User, cover_image?: string): Promise<Post> => {
   const response = await backendClient.post('/api/posts', {
     id: Date.now().toString(),
     title,
+    summary,
     content,
     author_id: author.id,
     author_username: author.username,
@@ -298,10 +299,11 @@ export const createPost = async (title: string, content: string, author: User, c
   return response.data;
 };
 
-export const updatePost = async (id: string, title: string, content: string, cover_image?: string): Promise<Post | null> => {
+export const updatePost = async (id: string, title: string, summary: string, content: string, cover_image?: string): Promise<Post | null> => {
   try {
     const response = await backendClient.put(`/api/posts/${id}`, {
       title,
+      summary,
       content,
       cover_image,
     });

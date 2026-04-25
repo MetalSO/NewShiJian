@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS themes (
 CREATE TABLE IF NOT EXISTS posts (
     id VARCHAR(255) PRIMARY KEY,
     title VARCHAR(500) NOT NULL,
+    summary VARCHAR(500) DEFAULT '',
     content TEXT NOT NULL,
     author_id VARCHAR(255) NOT NULL,
     author_username VARCHAR(255) NOT NULL,
@@ -133,6 +134,7 @@ async function ensureTableColumns() {
   
   // posts 表缺失字段
   const postsColumns = [
+    { table: 'posts', name: 'summary', type: 'VARCHAR(500) DEFAULT \'\'' },
     { table: 'posts', name: 'author_avatar', type: 'VARCHAR(500)' },
     { table: 'posts', name: 'cover_image', type: 'VARCHAR(500)' },
     { table: 'posts', name: 'likes', type: 'INTEGER DEFAULT 0' },

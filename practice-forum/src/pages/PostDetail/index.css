@@ -1,9 +1,20 @@
-.post-detail-page {
+﻿.post-detail-page {
+  --post-content-max-width: 900px;
+  --post-content-horizontal-padding: 80px;
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
   background: var(--bg-secondary);
   min-height: 100vh;
+}
+
+.post-reading-toolbar,
+.post-article,
+.comment-section {
+  width: min(100%, var(--post-content-max-width));
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 
 .reading-progress-bar {
@@ -19,27 +30,17 @@
   background: transparent !important;
 }
 
-.top-affix {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-}
-
-.top-affix .ant-affix {
+.post-reading-toolbar {
+  position: static;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-.top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
-  max-width: 1200px;
+  padding: 10px var(--post-content-horizontal-padding);
   margin: 0 auto;
+  gap: 12px;
 }
 
 .reading-info {
@@ -53,8 +54,7 @@
 
 .post-article {
   background: var(--bg-secondary);
-  padding: 60px 80px;
-  max-width: 900px;
+  padding: 0 var(--post-content-horizontal-padding) 60px;
   margin: 0 auto;
   min-height: calc(100vh - 120px);
 }
@@ -72,7 +72,22 @@
   margin-bottom: 32px !important;
   color: var(--primary-color);
   text-align: center;
-  font-family: "SimSun", "宋体", serif;
+  font-family: "SimSun", "瀹嬩綋", serif;
+}
+
+.post-summary {
+  margin: 0 0 28px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post-summary-empty {
+  opacity: 0.8;
+  font-style: italic;
 }
 
 .post-meta-row {
@@ -136,6 +151,16 @@
   line-height: inherit;
 }
 
+.e-book-content,
+.e-book-content h1,
+.e-book-content h2,
+.e-book-content h3,
+.e-book-content h4,
+.e-book-content h5,
+.e-book-content h6 {
+  font-family: inherit !important;
+}
+
 .e-book-content p {
   margin-bottom: 1.5em;
   text-align: justify;
@@ -150,7 +175,6 @@
 .e-book-content h4,
 .e-book-content h5,
 .e-book-content h6 {
-  font-family: "SimHei", "黑体", sans-serif;
   font-weight: 600;
   margin-top: 2em;
   margin-bottom: 1em;
@@ -296,8 +320,13 @@
 }
 
 @media (max-width: 768px) {
+  .post-detail-page {
+    --post-content-max-width: 100%;
+    --post-content-horizontal-padding: 24px;
+  }
+
   .post-article {
-    padding: 32px 24px;
+    padding: 24px var(--post-content-horizontal-padding) 32px;
     margin: 0;
     max-width: 100%;
   }
@@ -307,15 +336,22 @@
     text-align: left;
   }
 
+  .post-summary {
+    font-size: 16px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
   .post-meta-row {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .top-bar {
-    padding: 8px 16px;
+  .post-reading-toolbar {
+    padding: 8px var(--post-content-horizontal-padding);
     flex-wrap: wrap;
     gap: 8px;
+    margin-bottom: 0;
   }
 
   .reading-info {
@@ -338,14 +374,14 @@
 }
 
 @media (min-width: 1200px) {
-  .post-article {
-    max-width: 800px;
+  .post-detail-page {
+    --post-content-max-width: 900px;
   }
 }
 
 @media (min-width: 1400px) {
-  .post-article {
-    max-width: 750px;
+  .post-detail-page {
+    --post-content-max-width: 900px;
   }
 }
 
@@ -357,11 +393,8 @@
 }
 
 .comment-section {
-  margin-top: 48px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 80px;
+  margin-top: 20px;
+  padding: 0 var(--post-content-horizontal-padding);
 }
 
 .comment-input-card {
@@ -394,6 +427,7 @@
 
 @media (max-width: 768px) {
   .comment-section {
-    padding: 0 24px;
+    padding: 0 var(--post-content-horizontal-padding);
   }
 }
+

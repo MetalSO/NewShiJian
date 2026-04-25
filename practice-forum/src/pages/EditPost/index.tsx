@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Card, Typography, message, Spin } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getPost, updatePost } from '../../services/api';
@@ -24,7 +24,7 @@ const EditPost: React.FC = () => {
     }
 
     if (id) {
-      fetchPost(id);
+      void fetchPost(id);
     }
   }, [id, isAuthenticated, navigate]);
 
@@ -33,7 +33,6 @@ const EditPost: React.FC = () => {
       setFetchLoading(true);
       const data = await getPost(postId);
       if (data) {
-        // 检查是否是作者
         if (data.author_id !== user?.id) {
           message.error('您没有权限编辑此帖子');
           navigate('/');
@@ -41,6 +40,7 @@ const EditPost: React.FC = () => {
         }
         form.setFieldsValue({
           title: data.title,
+          summary: data.summary || '',
           content: data.content,
         });
       } else {
@@ -55,13 +55,13 @@ const EditPost: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: { title: string; content: string }) => {
+  const handleSubmit = async (values: { title: string; summary: string; content: string }) => {
     if (!id) return;
 
     try {
       setLoading(true);
-      await updatePost(id, values.title, values.content);
-      message.success('帖子更新成功！');
+      await updatePost(id, values.title, values.summary, values.content);
+      message.success('帖子更新成功');
       navigate(`/post/${id}`);
     } catch (error) {
       console.error('更新帖子失败:', error);
@@ -85,15 +85,8 @@ const EditPost: React.FC = () => {
         <Title level={3} className="page-title">
           编辑帖子
         </Title>
-        
-        <Form
-          form={form}
-          name="editPost"
-          onFinish={handleSubmit}
-          autoComplete="off"
-          layout="vertical"
-          size="large"
-        >
+
+        <Form form={form} name="editPost" onFinish={handleSubmit} autoComplete="off" layout="vertical" size="large">
           <Form.Item
             label="标题"
             name="title"
@@ -107,6 +100,17 @@ const EditPost: React.FC = () => {
           </Form.Item>
 
           <Form.Item
+            label="摘要"
+            name="summary"
+            rules={[
+              { required: true, message: '请输入摘要' },
+              { max: 220, message: '摘要最多220个字符' },
+            ]}
+          >
+            <TextArea placeholder="请输入摘要，用于首页预览展示" rows={3} showCount maxLength={220} />
+          </Form.Item>
+
+          <Form.Item
             label="内容"
             name="content"
             rules={[
@@ -114,27 +118,14 @@ const EditPost: React.FC = () => {
               { min: 10, message: '内容至少10个字符' },
             ]}
           >
-            <TextArea
-              placeholder="请输入帖子内容..."
-              rows={10}
-              showCount
-              maxLength={5000}
-            />
+            <TextArea placeholder="请输入帖子内容..." rows={10} showCount maxLength={5000} />
           </Form.Item>
 
           <Form.Item className="form-actions">
-            <Button
-              type="default"
-              onClick={() => navigate(`/post/${id}`)}
-              style={{ marginRight: 16 }}
-            >
+            <Button type="default" onClick={() => navigate(`/post/${id}`)} style={{ marginRight: 16 }}>
               取消
             </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-            >
+            <Button type="primary" htmlType="submit" loading={loading}>
               保存修改
             </Button>
           </Form.Item>

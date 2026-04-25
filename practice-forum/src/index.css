@@ -440,6 +440,7 @@ html[data-theme="dark"] .post-updated {
 .markdown-content h4,
 .markdown-content h5,
 .markdown-content h6 {
+  font-family: inherit !important;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
   font-weight: 600;

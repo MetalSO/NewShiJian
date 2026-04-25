@@ -6,6 +6,7 @@ const router = Router();
 interface Post {
   id: string;
   title: string;
+  summary?: string;
   content: string;
   author_id: string;
   author_username: string;
@@ -13,10 +14,30 @@ interface Post {
   updated_at: string;
 }
 
+const normalizeSummary = (value: unknown): string => {
+  if (typeof value !== 'string') return '';
+  return value.trim();
+};
+
+const POSTS_SELECT_FIELDS = `
+  id,
+  title,
+  COALESCE(summary, '') AS summary,
+  content,
+  author_id,
+  author_username,
+  author_avatar,
+  cover_image,
+  likes,
+  views,
+  created_at,
+  updated_at
+`;
+
 router.get('/', async (req: Request, res: Response) => {
   try {
     const result = await query(
-      'SELECT * FROM posts ORDER BY created_at DESC'
+      `SELECT ${POSTS_SELECT_FIELDS} FROM posts ORDER BY created_at DESC`
     );
     res.json(result.rows);
   } catch (error) {
@@ -29,7 +50,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await query(
-      'SELECT * FROM posts WHERE id = $1',
+      `SELECT ${POSTS_SELECT_FIELDS} FROM posts WHERE id = $1`,
       [id]
     );
     
@@ -46,17 +67,18 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { id, title, content, author_id, author_username, author_avatar, cover_image } = req.body;
+    const { id, title, summary, content, author_id, author_username, author_avatar, cover_image } = req.body;
+    const normalizedSummary = normalizeSummary(summary);
     
     if (!id || !title || !content || !author_id || !author_username) {
       return res.status(400).json({ error: '缺少必要参数' });
     }
     
     const result = await query(
-      `INSERT INTO posts (id, title, content, author_id, author_username, author_avatar, cover_image)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO posts (id, title, summary, content, author_id, author_username, author_avatar, cover_image)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [id, title, content, author_id, author_username, author_avatar || null, cover_image || null]
+      [id, title, normalizedSummary, content, author_id, author_username, author_avatar || null, cover_image || null]
     );
     
     res.status(201).json(result.rows[0]);
@@ -69,7 +91,8 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, content, cover_image } = req.body;
+    const { title, summary, content, cover_image } = req.body;
+    const normalizedSummary = normalizeSummary(summary);
     
     if (!title || !content) {
       return res.status(400).json({ error: '标题和内容不能为空' });
@@ -77,10 +100,10 @@ router.put('/:id', async (req: Request, res: Response) => {
     
     const result = await query(
       `UPDATE posts 
-       SET title = $1, content = $2, cover_image = COALESCE($4, cover_image), updated_at = CURRENT_TIMESTAMP
-       WHERE id = $3
+       SET title = $1, summary = $2, content = $3, cover_image = COALESCE($5, cover_image), updated_at = CURRENT_TIMESTAMP
+       WHERE id = $4
        RETURNING *`,
-      [title, content, id, cover_image || null]
+      [title, normalizedSummary, content, id, cover_image || null]
     );
     
     if (result.rows.length === 0) {
